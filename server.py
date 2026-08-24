@@ -8,7 +8,7 @@ app = Flask(__name__)
 DATA_FILE = "products.json"
 PENDING_FILE = "pending.json"
 PHOTOS_DIR = "photos"
-BASE_URL = "http://192.168.10.7:5000"
+BASE_URL = "https://toyshop-c632.onrender.com"
 MAX_PRODUCTS = 10
 
 os.makedirs(PHOTOS_DIR, exist_ok=True)
