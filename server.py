@@ -46,7 +46,7 @@ def product_payload(product=None, index=0, count=0, status="ok", message=""):
             "product_status": ""
         }
 
-    photo_name = os.path.basename(product.get("photo", "")) if product.get("photo") else ""
+    photo_name = product.get("photo", "").replace("\\", "/").split("/")[-1] if product.get("photo") else ""
     photo_url = f"{BASE_URL}/photos/{photo_name}" if photo_name else ""
     return {
         "status": status,
