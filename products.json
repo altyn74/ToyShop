@@ -1,0 +1,66 @@
+[
+  {
+    "name": "Машинка",
+    "price": "600",
+    "description": "красная машинка хорошее состояние",
+    "seller": "pulot74",
+    "photo": "photos\\WhatsApp Image 2026-08-23 at 22.23.53.jpeg",
+    "status": "Продаётся"
+  },
+  {
+    "name": "робот",
+    "price": "500",
+    "description": "робот работает батерейки в комплекте",
+    "seller": "макс",
+    "photo": "",
+    "status": "Продаётся"
+  },
+  {
+    "name": "блютуз price600",
+    "price": "",
+    "description": "блютуз ",
+    "seller": "Алтынбек ",
+    "photo": "",
+    "status": "Продаётся"
+  },
+  {
+    "name": "блютузprice600",
+    "price": "",
+    "description": "блютуз хороший",
+    "seller": "Алтынбек ",
+    "photo": "",
+    "status": "Продаётся"
+  },
+  {
+    "name": "блютуз ",
+    "price": "600",
+    "description": "блютуз хороший ",
+    "seller": "Алтынбек ",
+    "photo": "",
+    "status": "Продаётся"
+  },
+  {
+    "name": "блютуз ",
+    "price": "600",
+    "description": "блютуз хороший ",
+    "seller": "Алтынбек ",
+    "photo": "phone_1787552394240.jpg",
+    "status": "Продаётся"
+  },
+  {
+    "name": "блютуз",
+    "price": "600",
+    "description": "блютуз хороший",
+    "seller": "Алтынбек",
+    "photo": "phone_1787554259288.jpg",
+    "status": "Продаётся"
+  },
+  {
+    "name": "блютуз",
+    "price": "600",
+    "description": "блютуз хороший",
+    "seller": "Алтынбек",
+    "photo": "phone_1787555292955.jpg",
+    "status": "Продаётся"
+  }
+]
