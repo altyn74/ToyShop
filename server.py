@@ -5,9 +5,9 @@ import time
 
 app = Flask(__name__)
 
-DATA_FILE = "products.json"
-PENDING_FILE = "pending.json"
-PHOTOS_DIR = "photos"
+DATA_FILE = "/var/data/products.json"
+PENDING_FILE = "/var/data/pending.json"
+PHOTOS_DIR = "/var/data/photos"
 BASE_URL = "https://toyshop-c632.onrender.com"
 MAX_PRODUCTS = 100
 
