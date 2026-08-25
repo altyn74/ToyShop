@@ -101,12 +101,14 @@ def approve_first():
     products = load_json_file(DATA_FILE)
     if not pending:
         return jsonify(pending_payload("Нет товаров для одобрения"))
-    if len(products) >= MAX_PRODUCTS:
-        return jsonify(product_payload(pending[0], count=len(pending), status="error", message="Каталог заполнен: максимум 10 товаров")), 409
-
     product = pending.pop(0)
-    product["status"] = "Продаётся"
-    products.append(product)
+product["status"] = "Продаётся"
+
+# Новый товар всегда первым
+products.insert(0, product)
+
+# Оставляем только 100 самых новых
+products = products[:MAX_PRODUCTS]
     save_json_file(DATA_FILE, products)
     save_json_file(PENDING_FILE, pending)
     return jsonify(pending_payload("Товар одобрен"))
