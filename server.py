@@ -9,7 +9,7 @@ DATA_FILE = "products.json"
 PENDING_FILE = "pending.json"
 PHOTOS_DIR = "photos"
 BASE_URL = "https://toyshop-c632.onrender.com"
-MAX_PRODUCTS = 10
+MAX_PRODUCTS = 100
 
 os.makedirs(PHOTOS_DIR, exist_ok=True)
 
