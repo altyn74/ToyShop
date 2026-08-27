@@ -300,6 +300,31 @@ def submit():
         "section_name": section_name
     })
 
+@app.route("/admin/section/<section_id>")
+def admin_section(section_id):
+    products = load_json_file(DATA_FILE)
+    pending = load_json_file(PENDING_FILE)
+
+    approved_items = []
+    pending_items = []
+
+    for product in products:
+        if str(product.get("section_id", "")) == str(section_id):
+            approved_items.append(product)
+
+    for product in pending:
+        if str(product.get("section_id", "")) == str(section_id):
+            pending_items.append(product)
+
+    return jsonify({
+        "status": "ok",
+        "section_id": str(section_id),
+        "approved_count": len(approved_items),
+        "pending_count": len(pending_items),
+        "approved": approved_items,
+        "pending": pending_items
+    })
+
 @app.route("/photos/<path:filename>")
 def photos(filename):
     return send_from_directory(PHOTOS_DIR, filename)
