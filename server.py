@@ -265,6 +265,7 @@ def upload_photo():
 @app.route("/submit", methods=["POST"])
 def submit():
     data = request.get_json(silent=True)
+    print("SUBMIT DATA:", data)
     if not data:
         return jsonify({
             "status": "error",
