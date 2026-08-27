@@ -55,6 +55,68 @@ def register_seller():
         "section_name": "",
         "seller_status": "unassigned"
     })
+    @app.route("/admin/unassigned_sellers")
+def admin_unassigned_sellers():
+    sellers = load_json_file(SELLERS_FILE)
+
+    result = []
+
+    for seller in sellers:
+        if seller.get("status") == "unassigned":
+            result.append(seller)
+
+    return jsonify({
+        "status": "ok",
+        "count": len(result),
+        "sellers": result
+    })
+@app.route("/admin/assign_section", methods=["POST"])
+def admin_assign_section():
+    data = request.get_json(silent=True)
+
+    if not data:
+        return jsonify({
+            "status": "error",
+            "message": "Нет данных"
+        }), 400
+
+    seller_token = str(data.get("seller_token", "")).strip()
+    section_id = str(data.get("section_id", "")).strip()
+    section_name = str(data.get("section_name", "")).strip()
+
+    if not seller_token or not section_id or not section_name:
+        return jsonify({
+            "status": "error",
+            "message": "Не хватает данных"
+        }), 400
+
+    sellers = load_json_file(SELLERS_FILE)
+
+    found = False
+
+    for seller in sellers:
+        if seller.get("seller_token") == seller_token:
+            seller["section_id"] = section_id
+            seller["section_name"] = section_name
+            seller["status"] = "assigned"
+            found = True
+            break
+
+    if not found:
+        return jsonify({
+            "status": "error",
+            "message": "Продавец не найден"
+        }), 404
+
+    save_json_file(SELLERS_FILE, sellers)
+
+    return jsonify({
+        "status": "ok",
+        "message": "Раздел назначен",
+        "seller_token": seller_token,
+        "section_id": section_id,
+        "section_name": section_name
+    })
 
 def product_payload(product=None, index=0, count=0, status="ok", message=""):
     if not product:
