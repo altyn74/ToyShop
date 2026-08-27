@@ -264,6 +264,9 @@ def upload_photo():
 
 @app.route("/submit", methods=["POST"])
 def submit():
+    raw_data = request.get_data(as_text=True)
+    print("SUBMIT RAW:", raw_data)
+
     data = request.get_json(silent=True)
     print("SUBMIT DATA:", data)
     if not data:
