@@ -72,6 +72,16 @@ def admin_unassigned_sellers():
         "sellers": result
     })
 
+@app.route("/admin/pending_all")
+def admin_pending_all():
+    pending = load_json_file(PENDING_FILE)
+
+    return jsonify({
+        "status": "ok",
+        "count": len(pending),
+        "items": pending
+    })
+
 @app.route("/admin/assign_section", methods=["POST"])
 def admin_assign_section():
     data = request.get_json(silent=True)
