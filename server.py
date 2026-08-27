@@ -133,7 +133,10 @@ def product_payload(product=None, index=0, count=0, status="ok", message=""):
             "description": "",
             "photo": "",
             "photo_url": "",
-            "product_status": ""
+            "product_status": "",
+            "seller_token": "",
+            "section_id": "",
+            "section_name": ""
         }
 
     photo_name = product.get("photo", "").replace("\\", "/").split("/")[-1] if product.get("photo") else ""
@@ -149,7 +152,10 @@ def product_payload(product=None, index=0, count=0, status="ok", message=""):
         "description": product.get("description", ""),
         "photo": photo_name,
         "photo_url": photo_url,
-        "product_status": product.get("status", "")
+        "product_status": product.get("status", ""),
+        "seller_token": product.get("seller_token", ""),
+        "section_id": product.get("section_id", ""),
+        "section_name": product.get("section_name", "")
     }
 
 
