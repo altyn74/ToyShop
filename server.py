@@ -250,7 +250,24 @@ def upload_photo():
 def submit():
     data = request.get_json(silent=True)
     if not data:
-        return jsonify({"status": "error", "message": "Нет данных"}), 400
+        return jsonify({
+            "status": "error",
+            "message": "Нет данных"
+        }), 400
+
+    seller_token = str(data.get("seller_token", "")).strip()
+
+    section_id = ""
+    section_name = ""
+
+    if seller_token:
+        sellers = load_json_file(SELLERS_FILE)
+
+        for seller in sellers:
+            if seller.get("seller_token") == seller_token:
+                section_id = str(seller.get("section_id", "")).strip()
+                section_name = str(seller.get("section_name", "")).strip()
+                break
 
     product = {
         "name": str(data.get("name", "")).strip(),
@@ -258,17 +275,30 @@ def submit():
         "description": str(data.get("description", "")).strip(),
         "seller": str(data.get("seller", "")).strip(),
         "photo": str(data.get("photo", "")).strip(),
+
+        "seller_token": seller_token,
+        "section_id": section_id,
+        "section_name": section_name,
+
         "status": "На модерации"
     }
 
     if not product["name"] or not product["price"]:
-        return jsonify({"status": "error", "message": "Нужно название и цена"}), 400
+        return jsonify({
+            "status": "error",
+            "message": "Нужно название и цена"
+        }), 400
 
     pending = load_json_file(PENDING_FILE)
     pending.append(product)
     save_json_file(PENDING_FILE, pending)
-    return jsonify({"status": "ok", "message": "Товар отправлен на модерацию"})
 
+    return jsonify({
+        "status": "ok",
+        "message": "Товар отправлен на модерацию",
+        "section_id": section_id,
+        "section_name": section_name
+    })
 
 @app.route("/photos/<path:filename>")
 def photos(filename):
