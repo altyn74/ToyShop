@@ -55,6 +55,7 @@ def register_seller():
         "section_name": "",
         "seller_status": "unassigned"
     })
+    
 @app.route("/admin/unassigned_sellers")
 def admin_unassigned_sellers():
     sellers = load_json_file(SELLERS_FILE)
@@ -70,6 +71,7 @@ def admin_unassigned_sellers():
         "count": len(result),
         "sellers": result
     })
+
 @app.route("/admin/assign_section", methods=["POST"])
 def admin_assign_section():
     data = request.get_json(silent=True)
