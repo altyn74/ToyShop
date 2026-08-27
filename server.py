@@ -201,38 +201,54 @@ def pending_first():
     return jsonify(pending_payload())
 
 
-@app.route("/approve/0", methods=["POST"])
-def approve_first():
+@app.route("/approve/<int:index>", methods=["POST"])
+def approve_item(index):
     pending = load_json_file(PENDING_FILE)
     products = load_json_file(DATA_FILE)
 
-    if not pending:
-        return jsonify(pending_payload("Нет товаров для одобрения"))
+    if index < 0 or index >= len(pending):
+        return jsonify({
+            "status": "error",
+            "message": "Товар не найден"
+        }), 404
 
-    product = pending.pop(0)
+    product = pending.pop(index)
     product["status"] = "Продаётся"
 
-    # Новый товар всегда первым
+    # Новый товар всегда первым в магазине
     products.insert(0, product)
-
-    # Оставляем только 100 самых новых
     products = products[:MAX_PRODUCTS]
 
     save_json_file(DATA_FILE, products)
     save_json_file(PENDING_FILE, pending)
 
-    return jsonify(pending_payload("Товар одобрен"))
+    return jsonify({
+        "status": "ok",
+        "message": "Товар одобрен",
+        "section_id": product.get("section_id", ""),
+        "section_name": product.get("section_name", "")
+    })
 
 
-@app.route("/reject/0", methods=["POST"])
-def reject_first():
+@app.route("/reject/<int:index>", methods=["POST"])
+def reject_item(index):
     pending = load_json_file(PENDING_FILE)
-    if not pending:
-        return jsonify(pending_payload("Нет товаров для отклонения"))
-    pending.pop(0)
-    save_json_file(PENDING_FILE, pending)
-    return jsonify(pending_payload("Товар отклонён"))
 
+    if index < 0 or index >= len(pending):
+        return jsonify({
+            "status": "error",
+            "message": "Товар не найден"
+        }), 404
+
+    product = pending.pop(index)
+    save_json_file(PENDING_FILE, pending)
+
+    return jsonify({
+        "status": "ok",
+        "message": "Товар отклонён",
+        "section_id": product.get("section_id", ""),
+        "section_name": product.get("section_name", "")
+    })
 
 @app.route("/upload_photo", methods=["POST"])
 def upload_photo():
