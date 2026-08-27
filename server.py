@@ -55,7 +55,7 @@ def register_seller():
         "section_name": "",
         "seller_status": "unassigned"
     })
-    @app.route("/admin/unassigned_sellers")
+@app.route("/admin/unassigned_sellers")
 def admin_unassigned_sellers():
     sellers = load_json_file(SELLERS_FILE)
 
