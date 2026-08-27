@@ -2,11 +2,14 @@ from flask import Flask, jsonify, send_from_directory, request
 import json
 import os
 import time
+import uuid
 
 app = Flask(__name__)
 
 DATA_FILE = "/var/data/products.json"
 PENDING_FILE = "/var/data/pending.json"
+SELLERS_FILE = "/var/data/sellers.json"
+SECTIONS_FILE = "/var/data/sections.json"
 PHOTOS_DIR = "/var/data/photos"
 BASE_URL = "https://toyshop-c632.onrender.com"
 MAX_PRODUCTS = 100
@@ -28,6 +31,30 @@ def save_json_file(filename, data):
     with open(filename, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
+
+@app.route("/register_seller", methods=["POST"])
+def register_seller():
+    seller_token = str(uuid.uuid4())
+
+    sellers = load_json_file(SELLERS_FILE)
+
+    seller = {
+        "seller_token": seller_token,
+        "section_id": "",
+        "section_name": "",
+        "status": "unassigned"
+    }
+
+    sellers.append(seller)
+    save_json_file(SELLERS_FILE, sellers)
+
+    return jsonify({
+        "status": "ok",
+        "seller_token": seller_token,
+        "section_id": "",
+        "section_name": "",
+        "seller_status": "unassigned"
+    })
 
 def product_payload(product=None, index=0, count=0, status="ok", message=""):
     if not product:
