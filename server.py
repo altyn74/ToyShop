@@ -195,6 +195,61 @@ def catalog_item(index):
         return jsonify(product_payload(None, count=len(products), status="error", message="Товар не найден")), 404
     return jsonify(product_payload(products[index], index=index, count=len(products)))
 
+@app.route("/catalog_by_seller/<seller_token>/<int:index>")
+def catalog_by_seller(seller_token, index):
+    sellers = load_json_file(SELLERS_FILE)
+    products = load_json_file(DATA_FILE)
+
+    section_id = ""
+
+    for seller in sellers:
+        if seller.get("seller_token") == seller_token:
+            section_id = str(seller.get("section_id", "")).strip()
+            break
+
+    if not section_id:
+        return jsonify(
+            product_payload(
+                None,
+                count=0,
+                status="unassigned",
+                message="Продавцу не назначен раздел"
+            )
+        )
+
+    section_products = []
+
+    for product in products:
+        if str(product.get("section_id", "")).strip() == section_id:
+            section_products.append(product)
+
+    if not section_products:
+        return jsonify(
+            product_payload(
+                None,
+                count=0,
+                status="empty",
+                message="В этом разделе пока нет товаров"
+            )
+        )
+
+    if index < 0 or index >= len(section_products):
+        return jsonify(
+            product_payload(
+                None,
+                count=len(section_products),
+                status="error",
+                message="Товар не найден"
+            )
+        ), 404
+
+    return jsonify(
+        product_payload(
+            section_products[index],
+            index=index,
+            count=len(section_products)
+        )
+    )
 
 @app.route("/pending/0")
 def pending_first():
