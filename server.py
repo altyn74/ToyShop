@@ -72,6 +72,25 @@ def admin_unassigned_sellers():
         "sellers": result
     })
 
+@app.route("/seller_profile/<seller_token>")
+def seller_profile(seller_token):
+    sellers = load_json_file(SELLERS_FILE)
+
+    for seller in sellers:
+        if seller.get("seller_token") == seller_token:
+            return jsonify({
+                "status": "ok",
+                "seller_token": seller_token,
+                "section_id": seller.get("section_id", ""),
+                "section_name": seller.get("section_name", ""),
+                "seller_status": seller.get("status", "")
+            })
+
+    return jsonify({
+        "status": "error",
+        "message": "Участник не найден"
+    }), 404
+
 @app.route("/admin/pending_all")
 def admin_pending_all():
     pending = load_json_file(PENDING_FILE)
